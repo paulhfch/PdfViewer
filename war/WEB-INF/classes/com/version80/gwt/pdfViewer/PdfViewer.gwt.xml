@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='pdfViewer'>
+  <inherits name='com.google.gwt.user.User'/>     
+  <inherits name='com.google.gwt.user.theme.clean.Clean'/>
+
+  <servlet path="/PdfService" class="com.version80.gwt.pdfViewer.server.servlet.PdfServlet"/>
+  
+  <source path='client'/>
+  <source path='shared'/>
+
+</module>

@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:p="urn:import:com.version80.gwt.pdfViewer.client.view">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+			<g:VerticalPanel ui:field="pdfdisplay">
+				<g:Label ui:field="title" />
+				<p:PdfDisplayControl ui:field="pdfDisplayControl"/> 
+				<g:HTMLPanel ui:field="pdfPagePanel"></g:HTMLPanel>
+			</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

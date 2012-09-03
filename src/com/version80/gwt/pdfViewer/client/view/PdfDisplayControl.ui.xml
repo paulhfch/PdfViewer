@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+	<g:Grid>
+			<g:row>
+				<g:customCell>
+					<g:Button ui:field="prevButton">Prev</g:Button>
+				</g:customCell>
+				<g:customCell>
+					<g:Button ui:field="nextButton">Next</g:Button>
+				</g:customCell>
+				<g:customCell>
+					<g:Label text="Go to Page" />
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox ui:field="goToText" width="23px" text="1"
+						maxLength="999" alignment="RIGHT" />
+				</g:customCell>
+				<g:customCell>
+					<g:Label text="/Page" ui:field="numberOfPages" />
+				</g:customCell>
+				<g:customCell>
+					<g:Button ui:field="goToButton">Go</g:Button>
+				</g:customCell>
+				<g:customCell>
+					<g:Button ui:field="zoomIn">Enlarge</g:Button>
+				</g:customCell>
+				<g:customCell>
+					<g:Label text="/" />
+				</g:customCell>
+				<g:customCell>
+					<g:Button ui:field="originalSize">Original</g:Button>
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+	</g:HTMLPanel>
+</ui:UiBinder> 
