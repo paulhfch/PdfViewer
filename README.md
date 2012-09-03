@@ -5,13 +5,14 @@ Inherit this module in GWT to have PDF files stored on the server rendered into 
 Add PdfViewer source code to the dependent Projects in the build path.
 Or build PdfViewer.jar from source and add to Libraries in the build path.
 
+Create GWT Web Application Project.
+
 In {project}.gwt.xml file, inherit module.
 
 	<inherits name='com.version80.gwt.pdfViewer.PdfViewer'/>
 
-Create GWT Web Application Project.
 
-In entry point class, onModuleLoad() method,
+To instantiate a PdfViewer object and loads a PDF file stored on server,
 
 	PdfViewer viewer = new PdfViewer();
 
