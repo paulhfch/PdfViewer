@@ -6,12 +6,15 @@ Add PdfViewer source code to the dependent Projects in the build path.
 Or build PdfViewer.jar from source and add to Libraries in the build path.
 
 In {project}.gwt.xml file, inherit module.
-    <inherits name='com.version80.gwt.pdfViewer.PdfViewer'/>
+
+	<inherits name='com.version80.gwt.pdfViewer.PdfViewer'/>
 
 Create GWT Web Application Project.
 
 In entry point class, onModuleLoad() method,
-    PdfViewer viewer = new PdfViewer();
-    RootPanel.get().add(viewer);
-                    
-    viewer.loadPdfFile(FILEPATH);
+
+	PdfViewer viewer = new PdfViewer();
+
+	RootPanel.get().add(viewer);
+
+	viewer.loadPdfFile(FILEPATH);
