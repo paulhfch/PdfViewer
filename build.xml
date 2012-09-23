@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="PdfViewer" basedir="." default="jar">
+	<property name="gwt.module.name" value="com.version80.gwt.pdfViewer.PdfViewer" />
+	<property name="jar.name" value="pdfViewer.jar" />
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="build" />
+	<property name="war.dir" location="war" />
+	<property name="lib.dir" location="${war.dir}/WEB-INF/lib" />
+
+	<path id="project.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="prepare">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+	<!-- Compile the java source code using javac -->
+	<target name="compile" depends="prepare">
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+			<classpath refid="project.classpath" />
+		</javac>
+	</target>
+	<!-- Invoke the GWT compiler to create the Javascript for us -->
+	<target name="gwt-compile" depends="compile">
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+			<classpath>
+				<!-- src dir is added to ensure the module.xml file(s) are on the classpath -->
+				<pathelement location="${src.dir}" />
+				<pathelement location="${build.dir}" />
+				<path refid="project.classpath" />
+			</classpath>
+			<jvmarg value="-Xmx256M" />
+			<arg value="${gwt.module.name}" />
+		</java>
+	</target>
+
+	<!-- Package the compiled Java source into a JAR file -->
+	<target name="jar" depends="compile">
+		<jar destfile="${build.dir}/${jar.name}">
+			<fileset dir="${build.dir}/" />
+			<fileset dir="${src.dir}/" includes="**/*.*" />
+		</jar>
+	</target>
+
+</project>
