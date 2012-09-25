@@ -17,6 +17,18 @@ In {project}.gwt.xml file, inherit module
 
 	<inherits name='com.version80.gwt.pdfViewer.PdfViewer'/>
 
+In web.xml file, add the following lines:
+
+    <servlet>
+      <servlet-name>pdfServlet</servlet-name>
+      <servlet-class>com.version80.gwt.pdfViewer.server.servlet.PdfServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+       <servlet-name>pdfServlet</servlet-name>
+       <url-pattern>/pdfViewer/PdfService</url-pattern>
+    </servlet-mapping>
+
+
 To instantiate a PdfViewer object and load up a PDF file stored on server,
 
 	PdfViewer viewer = new PdfViewer();
