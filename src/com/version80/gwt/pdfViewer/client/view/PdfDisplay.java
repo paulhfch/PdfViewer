@@ -49,27 +49,27 @@ public class PdfDisplay extends Composite implements HasText {
 		this.title.setText(title);
 	}
 	
-	public VerticalPanel getPdfdisplay() {
+	protected VerticalPanel getPdfdisplay() {
 		return pdfdisplay;
 	}
 
-	public void setPdfdisplay(VerticalPanel pdfdisplay) {
+	protected void setPdfdisplay(VerticalPanel pdfdisplay) {
 		this.pdfdisplay = pdfdisplay;
 	}
 
-	public HTMLPanel getPdfPagePanel() {
+	protected HTMLPanel getPdfPagePanel() {
 		return pdfPagePanel;
 	}
 
-	public void setPdfPagePanel(HTMLPanel pdfPagePanel) {
+	protected void setPdfPagePanel(HTMLPanel pdfPagePanel) {
 		this.pdfPagePanel = pdfPagePanel;
 	}
 
-	public PdfDisplayControl getPdfDisplayControl() {
+	protected PdfDisplayControl getPdfDisplayControl() {
 		return pdfDisplayControl;
 	}
 
-	public void setPdfDisplayControl(PdfDisplayControl pdfDisplayControl) {
+	protected void setPdfDisplayControl(PdfDisplayControl pdfDisplayControl) {
 		this.pdfDisplayControl = pdfDisplayControl;
 	}
 

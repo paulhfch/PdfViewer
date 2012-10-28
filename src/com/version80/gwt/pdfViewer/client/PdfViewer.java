@@ -27,8 +27,8 @@ public class PdfViewer extends PdfDisplay{
 	private static String currentPdfImage = null;
 	private static int currentPdfPageNumber = -1;
 	private static int numberOfPdfPages = -1;
-	private static double pdfPageWidth = -1;
-	private static double pdfPageHeight = -1;
+	private static double pdfPageWidth = 500;
+	private static double pdfPageHeight = 500;
 	
 	private static double pdfEnlargeRate = 1;
 	private final static double ZoomInRate = 0.2;
@@ -113,7 +113,7 @@ public class PdfViewer extends PdfDisplay{
 	/**
 	 * Override this method to modify widget CSS styling
 	 */
-	public void style(){
+	protected void style(){
 		this.setStyleName("pdfDisplay");
 		this.getPdfDisplayControl().setStyleName("pdfDisplayControl");
 	}
@@ -126,9 +126,12 @@ public class PdfViewer extends PdfDisplay{
 
 		AsyncCallback<PdfPage> callback = new AsyncCallback<PdfPage>() {
 			public void onSuccess(PdfPage pdfPage) {
-				HTML imageHtml = new HTML("<i>PDF page rendering failed.");
-
-				if (pdfPage.getPageImage() != null) {
+				HTML imageHtml = null;
+				
+				if( pdfPage == null ){				
+					imageHtml = new HTML("<i>PDF page rendering failed: File Not Found. </i>");
+				}
+				else if (pdfPage.getPageImage() != null) {
 					currentPdfFilePath = pdfFilepath;
 					currentPdfPageNumber = pdfPage.getCurrentPageNumber();
 					numberOfPdfPages = pdfPage.getNumberOfPages();
