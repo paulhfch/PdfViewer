@@ -58,7 +58,6 @@ public class WarningPopup extends PopupPanel{
 	}
 	
 	public void setTimedWarningMessage(String message){
-		//TODO
 		warningMessage.setText(message);
 	}
 

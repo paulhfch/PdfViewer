@@ -14,6 +14,10 @@
   <servlet-name>pdfServlet</servlet-name>
   <url-pattern>/pdfViewer/PdfService</url-pattern>
 </servlet-mapping>
+<servlet-mapping>
+  <servlet-name>pdfServlet</servlet-name>
+  <url-pattern>/pdfViewerDemo/PdfService</url-pattern>
+</servlet-mapping>
 
   <!-- Default page to serve -->
   <welcome-file-list>

@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 <project name="PdfViewer" basedir="." default="jar">
-	<property name="gwt.module.name" value="com.version80.gwt.pdfViewer.PdfViewer" />
+	<property name="gwt.module.name" value="com.version80.gwt.pdfViewer.PdfViewerDemo" />
 	<property name="jar.name" value="pdfViewer.jar" />
+	<property name="war.name" value="pdfViewerDemo.war" />
 	<property name="src.dir" location="src" />
 	<property name="build.dir" location="build" />
 	<property name="war.dir" location="war" />
+	<property name="classes.dir" location="${war.dir}/WEB-INF/classes" />
 	<property name="lib.dir" location="${war.dir}/WEB-INF/lib" />
+	<property name="resources.dir" location="resources" />
 
 	<path id="project.classpath">
 		<fileset dir="${lib.dir}">
@@ -15,14 +18,16 @@
 
 	<target name="prepare">
 		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.dir}" />
 	</target>
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
+		<delete dir="${classes.dir}" />
 	</target>
 	<!-- Compile the java source code using javac -->
 	<target name="compile" depends="prepare">
-		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+		<javac includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}">
 			<classpath refid="project.classpath" />
 		</javac>
 	</target>
@@ -32,7 +37,7 @@
 			<classpath>
 				<!-- src dir is added to ensure the module.xml file(s) are on the classpath -->
 				<pathelement location="${src.dir}" />
-				<pathelement location="${build.dir}" />
+				<pathelement location="${classes.dir}" />
 				<path refid="project.classpath" />
 			</classpath>
 			<jvmarg value="-Xmx256M" />
@@ -41,11 +46,32 @@
 	</target>
 
 	<!-- Package the compiled Java source into a JAR file -->
-	<target name="jar" depends="compile">
+	<target name="jar" depends="gwt-compile">
 		<jar destfile="${build.dir}/${jar.name}">
 			<fileset dir="${build.dir}/" />
 			<fileset dir="${src.dir}/" includes="**/*.*" />
 		</jar>
 	</target>
 
+	<target name="copy-resources">
+		<copy todir="${classes.dir}">
+			<fileset dir="${resources.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="war" depends="gwt-compile, copy-resources">
+		<war destfile="${build.dir}/${war.name}">
+			<fileset dir="war">
+				<include name="**/*.*" />
+				<exclude name="**/*Test.java" />
+				<exclude name="resources/" />
+				<exclude name="**/*.log" />
+				<exclude name="WEB-INF/lib/gwt-dev.jar" />
+				<exclude name="WEB-INF/lib/gwt-user.jar" />
+			</fileset>
+		</war>
+	</target>
 </project>

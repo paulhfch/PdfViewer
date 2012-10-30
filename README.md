@@ -6,6 +6,14 @@ Inherit this module in GWT to have PDF files stored on the server rendered into 
     ant clean  
     ant  
 
+#PDF Viewer Demo
+PdfViewerDemo module is runnable in GWT devMode.
+
+Build project first.
+
+In Eclipse IDE: 
+Right click PdfViewerDemo.gwt.xml -> run as -> Web application
+
 #Quick Start
 Add the pdfViewer.jar file in {path/to/PdfViewer/dir}/build directory to the Java build path.
 

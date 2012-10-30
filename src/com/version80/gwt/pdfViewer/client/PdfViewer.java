@@ -7,8 +7,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.HTML;
-import com.version80.gwt.pdfViewer.client.services.PdfService;
-import com.version80.gwt.pdfViewer.client.services.PdfServiceAsync;
+import com.version80.gwt.pdfViewer.client.service.PdfService;
+import com.version80.gwt.pdfViewer.client.service.PdfServiceAsync;
 import com.version80.gwt.pdfViewer.client.view.PdfDisplay;
 import com.version80.gwt.pdfViewer.client.view.PdfDisplayControl;
 import com.version80.gwt.pdfViewer.client.view.WarningPopup;
@@ -171,7 +171,7 @@ public class PdfViewer extends PdfDisplay{
 	/**
 	 * loads up the PDF file at the file path and displays 
 	 * the first page.
-	 * @param filePath
+	 * @param filePath relative to the resources directory
 	 */
 	public void loadPdfFile( String filePath ){
 		currentPdfFilePath = filePath;

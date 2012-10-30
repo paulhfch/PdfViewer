@@ -1,4 +1,4 @@
-package com.version80.gwt.pdfViewer.client.services;
+package com.version80.gwt.pdfViewer.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.version80.gwt.pdfViewer.shared.PdfPage;

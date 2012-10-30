@@ -1,4 +1,4 @@
-package com.version80.gwt.pdfViewer.server;
+package com.version80.gwt.pdfViewer.server.servlet.serviceImpl;
 
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
@@ -17,8 +17,6 @@ import com.sun.pdfview.PDFPage;
 import com.version80.gwt.pdfViewer.shared.PdfPage;
 
 public class PdfRendererHelper {
-	public PdfRendererHelper(){	
-	}
 	
 	/**
 	 * gets the PDF file from the filepath provided
@@ -26,7 +24,7 @@ public class PdfRendererHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public PDFFile getPdfFile(String filepath) throws Exception{
+	public static PDFFile getPdfFile(String filepath) throws Exception{
 		RandomAccessFile raf = new RandomAccessFile(new File(filepath), "r");
 	    FileChannel fc = raf.getChannel ();
 	    ByteBuffer buf = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size ());
@@ -43,7 +41,7 @@ public class PdfRendererHelper {
 	 * @return
 	 * @throws IOException 
 	 */
-	public String getPdfPageInBase64String(PDFFile pdfFile, int pageNumber) throws Exception{		
+	public static String getPdfPageInBase64String(PDFFile pdfFile, int pageNumber) throws Exception{		
 		if(pageNumber > pdfFile.getNumPages()){
 			return null;
 		}
@@ -60,10 +58,10 @@ public class PdfRendererHelper {
 	    ImageIO.write((BufferedImage)image, "png", baos );
 	    byte[] imageInByte = baos.toByteArray();
 
-	    return ServerUtil.byteArrayToBase64String(imageInByte);
+	    return byteArrayToBase64String(imageInByte);
 	}
 	
-	public void setPdfPageSize(PdfPage pdfPage, PDFFile pdfFile, int pageNumber) throws Exception{
+	public static void setPdfPageSize(PdfPage pdfPage, PDFFile pdfFile, int pageNumber) throws Exception{
 		if(pageNumber > pdfFile.getNumPages()){
 			throw new Exception("page number doesn't exist.");
 		}
@@ -75,7 +73,7 @@ public class PdfRendererHelper {
 	    pdfPage.setHeight(r2d.getHeight());
 	}
 	
-	public PdfPage getPageInPDF(String pdfFilePath, int pageNumber) throws Exception{
+	public static PdfPage getPageInPDF(String pdfFilePath, int pageNumber) throws Exception{
 		PdfPage page = new PdfPage();
 		
 		PDFFile pdfFile = getPdfFile(pdfFilePath);
@@ -89,5 +87,21 @@ public class PdfRendererHelper {
 		
 		return page;
 	}
- 
+	
+	/**
+	 * converts byte array to base64 string for the image retrieval from DB blobs
+	 * @param byteArray
+	 * @return String
+	 */
+	public static String byteArrayToBase64String(byte[] byteArray){
+		String base64String = null;
+		
+		if(byteArray != null){
+			sun.misc.BASE64Encoder enc = new sun.misc.BASE64Encoder(); 
+        	String base64Contents = enc.encode(byteArray).replaceAll("\\s+", ""); 
+        	base64String = "data:image/png;base64," + base64Contents; 
+		}
+		
+		return base64String;
+	}
 }

@@ -4,7 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class PdfViewerDemo implements EntryPoint{
-	final String TEST_PDF = "resources/test.pdf";
+	final String TEST_PDF = "test.pdf";
 
 	PdfViewer viewer;
 
