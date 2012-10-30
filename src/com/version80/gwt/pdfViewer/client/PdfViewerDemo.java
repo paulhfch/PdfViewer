@@ -11,7 +11,7 @@ public class PdfViewerDemo implements EntryPoint{
 	@Override
 	public void onModuleLoad() {		
 		viewer = new PdfViewer();
-		viewer.loadPdfFile( TEST_PDF );
+		viewer.loadPdfFile( TEST_PDF, false );
 		
 		RootPanel.get().add(viewer);
 	}

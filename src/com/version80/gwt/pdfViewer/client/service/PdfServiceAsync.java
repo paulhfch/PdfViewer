@@ -5,5 +5,5 @@ import com.version80.gwt.pdfViewer.shared.PdfPage;
 
 
 public interface PdfServiceAsync {
-	void getPdfPage(String pdfFilepath, int pageNumber, AsyncCallback<PdfPage> callback);
+	void getPdfPage(String pdfFilepath, boolean isAbsolutePath, int pageNumber, AsyncCallback<PdfPage> callback);
 }

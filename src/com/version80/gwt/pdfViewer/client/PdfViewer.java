@@ -24,6 +24,7 @@ import com.version80.gwt.pdfViewer.shared.PdfPage;
 public class PdfViewer extends PdfDisplay{
 
 	private static String currentPdfFilePath = null;
+	private static boolean isAbsolutePath = false;
 	private static String currentPdfImage = null;
 	private static int currentPdfPageNumber = -1;
 	private static int numberOfPdfPages = -1;
@@ -56,7 +57,7 @@ public class PdfViewer extends PdfDisplay{
 			@Override
 			public void onClick(ClickEvent event) {
 				if (currentPdfPageNumber > 1) {
-					callPdfRenderingService(currentPdfFilePath,
+					callPdfRenderingService(currentPdfFilePath, isAbsolutePath,
 							currentPdfPageNumber - 1);
 				}
 				else{
@@ -70,7 +71,7 @@ public class PdfViewer extends PdfDisplay{
 			@Override
 			public void onClick(ClickEvent event) {
 				if (currentPdfPageNumber < numberOfPdfPages) {
-					callPdfRenderingService(currentPdfFilePath,
+					callPdfRenderingService(currentPdfFilePath, isAbsolutePath,
 							currentPdfPageNumber + 1);
 				}
 				else{
@@ -86,7 +87,7 @@ public class PdfViewer extends PdfDisplay{
 				int goToPage = Integer.parseInt(pdfDisplayControl.getGoToPage());
 
 				if (goToPage <= numberOfPdfPages && goToPage > 0) {
-					callPdfRenderingService(currentPdfFilePath, goToPage);
+					callPdfRenderingService(currentPdfFilePath, isAbsolutePath, goToPage);
 				}
 			}
 		});
@@ -118,9 +119,8 @@ public class PdfViewer extends PdfDisplay{
 		this.getPdfDisplayControl().setStyleName("pdfDisplayControl");
 	}
 	
-	private void callPdfRenderingService(final String pdfFilepath, final int pageNumber) {
-		PdfServiceAsync pdfService = (PdfServiceAsync) GWT
-				.create(PdfService.class);
+	private void callPdfRenderingService(final String pdfFilepath, boolean isAbsolutePath, final int pageNumber) {
+		PdfServiceAsync pdfService = (PdfServiceAsync) GWT.create(PdfService.class);
 		ServiceDefTarget endpoint = (ServiceDefTarget) pdfService;
 		endpoint.setServiceEntryPoint(GWT.getModuleBaseURL() + "PdfService");
 
@@ -165,18 +165,22 @@ public class PdfViewer extends PdfDisplay{
 		PdfViewer.this.getPdfPagePanel().clear();
 		PdfViewer.this.getPdfPagePanel().add(new HTML("<i>Loading...</i>"));
 		
-		pdfService.getPdfPage(pdfFilepath, pageNumber, callback);
+		pdfService.getPdfPage(pdfFilepath, isAbsolutePath, pageNumber, callback);
 	}
-	
+
 	/**
-	 * loads up the PDF file at the file path and displays 
+	 * loads up the PDF file at the (relative/absolute)file path and displays 
 	 * the first page.
-	 * @param filePath relative to the resources directory
+	 * 
+	 * @param filePath to the PDF file
+	 * @param isAbsolutePath? true - look for the file at the absolute path; 
+	 * false - look for the file relative to the resources directory
 	 */
-	public void loadPdfFile( String filePath ){
-		currentPdfFilePath = filePath;
+	public void loadPdfFile( String filePath, boolean isAbsolutePath ){
+		PdfViewer.currentPdfFilePath = filePath;
+		PdfViewer.isAbsolutePath = isAbsolutePath;
 		
-		callPdfRenderingService(currentPdfFilePath , 1);
+		callPdfRenderingService(currentPdfFilePath, isAbsolutePath, 1);
 	}
 	
 	private void reloadPdfImg() {

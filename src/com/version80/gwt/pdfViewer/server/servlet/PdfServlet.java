@@ -13,8 +13,8 @@ public class PdfServlet extends RemoteServiceServlet implements PdfService{
 	PdfService impl = new PdfServiceImpl();
 	
 	@Override
-	public PdfPage getPdfPage(String pdfFilepath, int pageNumber) {
-		return impl.getPdfPage(pdfFilepath, pageNumber);
+	public PdfPage getPdfPage(String pdfFilepath, boolean isAbsolutePath, int pageNumber) {
+		return impl.getPdfPage(pdfFilepath, isAbsolutePath, pageNumber);
 	}
 
 }
