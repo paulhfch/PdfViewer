@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * PdfDisplay aggregates PDF page rendering panel and the 
+ * PdfDisplay aggregates the PDF page rendering panel and the 
  * PDF navigation controls.
- * '
+ * 
  * @author fangchen
  *
  */

@@ -11,7 +11,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * consists of the PDF navigation controls.
+ * This view consists of the PDF navigation controls.
+ * 
  * @author fangchen
  *
  */

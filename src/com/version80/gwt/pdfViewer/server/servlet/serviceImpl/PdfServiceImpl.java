@@ -8,26 +8,21 @@ import com.version80.gwt.pdfViewer.shared.PdfPage;
 
 public class PdfServiceImpl implements PdfService{	
 	
-	public PdfPage getPdfPage(String relativeFilePath, boolean isAbsolutePath, int pageNumber){
+	public PdfPage getPdfPage(String filePath, boolean isAbsolutePath, int pageNumber){
 		PdfPage page = null;
+		String file = filePath;
 		
 		if( !isAbsolutePath ){
-			URL pdfFilepath = this.getClass().getClassLoader().getResource(relativeFilePath);
-			
-			try{
-				page = PdfRendererHelper.getPageInPDF(pdfFilepath.getPath(), pageNumber);
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
+			URL pdfFilepath = this.getClass().getClassLoader().getResource(filePath);
+			file = pdfFilepath.getPath();
 		}
-		else{
-			try {
-				page = PdfRendererHelper.getPageInPDF(relativeFilePath, pageNumber);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	
+		try {
+			page = PdfRendererHelper.getPageInPDF(file, pageNumber);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
 		return page;
 	}
 }

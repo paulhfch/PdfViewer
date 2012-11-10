@@ -19,12 +19,30 @@ import com.version80.gwt.pdfViewer.shared.PdfPage;
 public class PdfRendererHelper {
 	
 	/**
-	 * gets the PDF file from the filepath provided
-	 * @param filepath
-	 * @return
+	 * Retrieves the PDF page from the PDF file and renders it into Base64 string, and 
+	 * encapsulate the image in the DTO PdfPage
+	 * 
+	 * @param pdfFilePath file path to the PDF file
+	 * @param pageNumber page number of the PDF file to render
+	 * @return PdfPage which contains the PNG image and other meta data
 	 * @throws Exception
 	 */
-	public static PDFFile getPdfFile(String filepath) throws Exception{
+	public static PdfPage getPageInPDF(String pdfFilePath, int pageNumber) throws Exception{
+		PdfPage page = new PdfPage();
+		
+		PDFFile pdfFile = getPdfFile(pdfFilePath);
+		String pageImage = getPdfPageInBase64String(pdfFile, pageNumber);
+		
+		page.setPdfTitle(pdfFilePath);
+		page.setNumberOfPages(pdfFile.getNumPages());
+		page.setCurrentPageNumber(pageNumber);
+		page.setPageImage(pageImage);
+		setPdfPageToOriginalSize(page, pdfFile, pageNumber);
+		
+		return page;
+	}
+	
+	private static PDFFile getPdfFile(String filepath) throws Exception{
 		RandomAccessFile raf = new RandomAccessFile(new File(filepath), "r");
 	    FileChannel fc = raf.getChannel ();
 	    ByteBuffer buf = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size ());
@@ -35,10 +53,12 @@ public class PdfRendererHelper {
 	
 	/**
 	 * outputs Base64 string of the pdf page image to its original size
-	 * pdf file page number starts at 1
-	 * @param pdfFile
-	 * @param pageNumber
-	 * @return
+	 * 
+	 * <p> Note: pdf file page number starts at 1 <p>
+	 * 
+	 * @param pdfFile the instance of the PDF file
+	 * @param pageNumber page number of the PDF file to render
+	 * @return Base64 encoded string of the PNG image
 	 * @throws IOException 
 	 */
 	public static String getPdfPageInBase64String(PDFFile pdfFile, int pageNumber) throws Exception{		
@@ -61,7 +81,7 @@ public class PdfRendererHelper {
 	    return byteArrayToBase64String(imageInByte);
 	}
 	
-	public static void setPdfPageSize(PdfPage pdfPage, PDFFile pdfFile, int pageNumber) throws Exception{
+	private static void setPdfPageToOriginalSize(PdfPage pdfPage, PDFFile pdfFile, int pageNumber) throws Exception{
 		if(pageNumber > pdfFile.getNumPages()){
 			throw new Exception("page number doesn't exist.");
 		}
@@ -73,27 +93,7 @@ public class PdfRendererHelper {
 	    pdfPage.setHeight(r2d.getHeight());
 	}
 	
-	public static PdfPage getPageInPDF(String pdfFilePath, int pageNumber) throws Exception{
-		PdfPage page = new PdfPage();
-		
-		PDFFile pdfFile = getPdfFile(pdfFilePath);
-		String pageImage = getPdfPageInBase64String(pdfFile, pageNumber);
-		
-		page.setPdfTitle(pdfFilePath);
-		page.setNumberOfPages(pdfFile.getNumPages());
-		page.setCurrentPageNumber(pageNumber);
-		page.setPageImage(pageImage);
-		setPdfPageSize(page, pdfFile, pageNumber);
-		
-		return page;
-	}
-	
-	/**
-	 * converts byte array to base64 string for the image retrieval from DB blobs
-	 * @param byteArray
-	 * @return String
-	 */
-	public static String byteArrayToBase64String(byte[] byteArray){
+	private static String byteArrayToBase64String(byte[] byteArray){
 		String base64String = null;
 		
 		if(byteArray != null){

@@ -15,8 +15,8 @@ import com.version80.gwt.pdfViewer.client.view.WarningPopup;
 import com.version80.gwt.pdfViewer.shared.PdfPage;
 
 /**
- * PdfViewer renders PDF files on the server into Base64 Strings and
- * displays the images in the browser.
+ * <code>PdfViewer</code> consists of a GWT-widget and a servlet, which renders PDF pages into PNG images 
+ * and displays the PDF pages in the GWT-widget. 
  * 
  * @author fangchen
  *
@@ -173,7 +173,8 @@ public class PdfViewer extends PdfDisplay{
 	 * the first page.
 	 * 
 	 * @param filePath to the PDF file
-	 * @param isAbsolutePath? true - look for the file at the absolute path; 
+	 * @param isAbsolutePath? 
+	 * true - look for the file at the absolute path; 
 	 * false - look for the file relative to the resources directory
 	 */
 	public void loadPdfFile( String filePath, boolean isAbsolutePath ){
@@ -195,7 +196,7 @@ public class PdfViewer extends PdfDisplay{
 	
 	/**
 	 * Pops up a warning dialog
-	 * @param warningMessage
+	 * @param warningMessage warning text displayed to the user
 	 */
 	public void setWarning(String warningMessage){
 		warningPopup.setWarningMessage(warningMessage);

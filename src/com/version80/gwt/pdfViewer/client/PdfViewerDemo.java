@@ -6,11 +6,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class PdfViewerDemo implements EntryPoint{
 	final String TEST_PDF = "test.pdf";
 
-	PdfViewer viewer;
-
 	@Override
 	public void onModuleLoad() {		
-		viewer = new PdfViewer();
+		PdfViewer viewer = new PdfViewer();
 		viewer.loadPdfFile( TEST_PDF, false );
 		
 		RootPanel.get().add(viewer);
