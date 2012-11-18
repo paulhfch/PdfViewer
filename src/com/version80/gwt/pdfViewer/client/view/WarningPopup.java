@@ -60,5 +60,12 @@ public class WarningPopup extends PopupPanel{
 	public void setTimedWarningMessage(String message){
 		warningMessage.setText(message);
 	}
+	
+	 @Override
+	public void center() {
+		super.center();
+		
+		okButton.setFocus(true);
+	}
 
 }

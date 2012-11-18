@@ -11,7 +11,9 @@
 			<g:VerticalPanel ui:field="pdfdisplay">
 				<g:Label ui:field="title" />
 				<p:PdfDisplayControl ui:field="pdfDisplayControl"/> 
-				<g:HTMLPanel ui:field="pdfPagePanel"></g:HTMLPanel>
+				<g:ScrollPanel alwaysShowScrollBars="true">
+					<g:HTMLPanel ui:field="pdfPagePanel"></g:HTMLPanel>
+				</g:ScrollPanel>
 			</g:VerticalPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 
