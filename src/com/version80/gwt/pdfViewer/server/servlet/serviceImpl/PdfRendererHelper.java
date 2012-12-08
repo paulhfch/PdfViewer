@@ -27,7 +27,7 @@ public class PdfRendererHelper {
 	 * @return PdfPage which contains the PNG image and other meta data
 	 * @throws Exception
 	 */
-	public static PdfPage getPageInPDF(String pdfFilePath, int pageNumber) throws Exception{
+	/*package*/ static PdfPage getPageInPDF(String pdfFilePath, int pageNumber) throws Exception{
 		PdfPage page = new PdfPage();
 		
 		PDFFile pdfFile = getPdfFile(pdfFilePath);
@@ -61,7 +61,7 @@ public class PdfRendererHelper {
 	 * @return Base64 encoded string of the PNG image
 	 * @throws IOException 
 	 */
-	public static String getPdfPageInBase64String(PDFFile pdfFile, int pageNumber) throws Exception{		
+	/*package*/ static String getPdfPageInBase64String(PDFFile pdfFile, int pageNumber) throws Exception{		
 		if(pageNumber > pdfFile.getNumPages()){
 			return null;
 		}

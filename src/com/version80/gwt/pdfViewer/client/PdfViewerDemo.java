@@ -9,9 +9,9 @@ public class PdfViewerDemo implements EntryPoint{
 	@Override
 	public void onModuleLoad() {	
 		
-		PdfViewerContext context = new PdfViewerContext(600d, 500d);
+		PdfViewerContext context = PdfViewerContext.createPdfViewerContext(600d, 500d, PdfSource.RESOURCES_DIR);
 		PdfViewer viewer = new PdfViewer(context);
-		viewer.loadPdfFile( TEST_PDF, false );
+		viewer.loadPdfFile( TEST_PDF );
 		
 		RootPanel.get().add(viewer);
 	}

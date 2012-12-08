@@ -9,12 +9,13 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.HTML;
-import com.version80.gwt.pdfViewer.client.service.PdfService;
-import com.version80.gwt.pdfViewer.client.service.PdfServiceAsync;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.version80.gwt.pdfViewer.client.view.PdfDisplay;
 import com.version80.gwt.pdfViewer.client.view.PdfDisplayControl;
 import com.version80.gwt.pdfViewer.client.view.WarningPopup;
 import com.version80.gwt.pdfViewer.shared.PdfPage;
+import com.version80.gwt.pdfViewer.shared.service.PdfService;
+import com.version80.gwt.pdfViewer.shared.service.PdfServiceAsync;
 
 /**
  * <code>PdfViewer</code> consists of a GWT-widget and a servlet, which renders PDF pages into PNG images 
@@ -29,22 +30,9 @@ public class PdfViewer extends PdfDisplay{
 	private WarningPopup warningPopup;
 	private PdfViewerContext pdfViewerContext;
 	
-	public PdfViewer(){
-		super();
-		
-		pdfViewerContext = new PdfViewerContext();
-		pdfDisplayControl = this.getPdfDisplayControl();
-		 
-		initWarning();
-		bind();
-		style();
-	}
-	
 	public PdfViewer(PdfViewerContext pdfViewerContext){
-		super();
-		
 		this.pdfViewerContext = pdfViewerContext;
-		pdfDisplayControl = this.getPdfDisplayControl();
+		pdfDisplayControl =  getPdfDisplayControl();
 		
 		initWarning();
 		bind();
@@ -60,12 +48,14 @@ public class PdfViewer extends PdfDisplay{
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (pdfViewerContext.getCurrentPdfPageNumber() > 1) {
-					callPdfRenderingService(pdfViewerContext.getCurrentPdfFilePath(), pdfViewerContext.isAbsolutePath(),
-							pdfViewerContext.getCurrentPdfPageNumber() - 1);
-				}
-				else{
-					setWarning("This is the first page of the PDF file.");
+				if(pdfViewerContext.getNumberOfPdfPages() != 0){
+					if (pdfViewerContext.getCurrentPdfPageNumber() > 1) {
+						callPdfRenderingService(
+								pdfViewerContext.getCurrentPdfFilePath(),
+								pdfViewerContext.getCurrentPdfPageNumber() - 1);
+					} else {
+						setWarning("This is the first page of the PDF file.");
+					}
 				}
 			}
 		});
@@ -74,12 +64,15 @@ public class PdfViewer extends PdfDisplay{
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (pdfViewerContext.getCurrentPdfPageNumber() < pdfViewerContext.getNumberOfPdfPages()) {
-					callPdfRenderingService(pdfViewerContext.getCurrentPdfFilePath(), pdfViewerContext.isAbsolutePath(),
-							pdfViewerContext.getCurrentPdfPageNumber() + 1);
-				}
-				else{
-					setWarning("You have reached the end of the PDF file.");
+				if (pdfViewerContext.getNumberOfPdfPages() != 0) {
+					if (pdfViewerContext.getCurrentPdfPageNumber() < pdfViewerContext
+							.getNumberOfPdfPages()) {
+						callPdfRenderingService(
+								pdfViewerContext.getCurrentPdfFilePath(),
+								pdfViewerContext.getCurrentPdfPageNumber() + 1);
+					} else {
+						setWarning("You have reached the end of the PDF file.");
+					}
 				}
 			}
 		});
@@ -126,7 +119,7 @@ public class PdfViewer extends PdfDisplay{
 		int goToPage = pageNumber;
 
 		if (goToPage <= pdfViewerContext.getNumberOfPdfPages() && goToPage > 0) {
-			callPdfRenderingService(pdfViewerContext.getCurrentPdfFilePath(), pdfViewerContext.isAbsolutePath(), goToPage);
+			callPdfRenderingService(pdfViewerContext.getCurrentPdfFilePath(), goToPage);
 		}
 		else{
 			setWarning( "Error: page number is out of range." );
@@ -149,53 +142,25 @@ public class PdfViewer extends PdfDisplay{
 		}
 	}
 	
-	private void callPdfRenderingService(final String pdfFilepath, boolean isAbsolutePath, final int pageNumber) {
+	private void callPdfRenderingService(final String pdfFilepath, final int pageNumber) {
 		PdfServiceAsync pdfService = (PdfServiceAsync) GWT.create(PdfService.class);
 		ServiceDefTarget endpoint = (ServiceDefTarget) pdfService;
 		endpoint.setServiceEntryPoint(GWT.getModuleBaseURL() + "PdfService");
+		
+		pdfViewerContext.setCurrentPdfFilePath(pdfFilepath);
 
-		AsyncCallback<PdfPage> callback = new AsyncCallback<PdfPage>() {
-			public void onSuccess(PdfPage pdfPage) {
-				HTML imageHtml = null;
-				
-				if( pdfPage == null ){				
-					imageHtml = new HTML("<i>PDF page rendering failed: File Not Found. </i>");
-				}
-				else if (pdfPage.getPageImage() != null) {
-					pdfViewerContext.setCurrentPdfFilePath(pdfFilepath);
-					pdfViewerContext.setCurrentPdfPageNumber(pdfPage.getCurrentPageNumber());
-					pdfViewerContext.setNumberOfPdfPages(pdfPage.getNumberOfPages());
-					pdfViewerContext.setCurrentPdfImage(pdfPage.getPageImage());
-					pdfViewerContext.setPdfPageWidth(pdfPage.getWidth());
-					pdfViewerContext.setPdfPageHeight(pdfPage.getHeight());
-					pdfViewerContext.setPdfHeightToWidthRatio(pdfPage.getHeight() / pdfPage.getWidth());
-					
-					imageHtml = new HTML("<img style='display:block; "
-							+ "width:" + pdfViewerContext.getPdfPageWidth() * pdfViewerContext.getPdfEnlargeRate() + "px;" 
-							+ "height:" + pdfViewerContext.getPdfPageWidth() * pdfViewerContext.getPdfEnlargeRate() * pdfViewerContext.getPdfHeightToWidthRatio() + "px;'"
-							+ "src='" + pdfPage.getPageImage() + "' />");
-				}
-
-				PdfViewer.this.getPdfPagePanel().clear();
-				PdfViewer.this.getPdfPagePanel().add(imageHtml);
-
-				PdfViewer.this.getPdfDisplayControl().setNumberOfPages(pdfViewerContext.getNumberOfPdfPages());
-				PdfViewer.this.getPdfDisplayControl().setGoToText(pdfViewerContext.getCurrentPdfPageNumber());
-			}
-
-			public void onFailure(Throwable caught) {
-				PdfViewer.this.getPdfDisplayControl().setNumberOfPages(0);
-				PdfViewer.this.getPdfDisplayControl().setGoToText(0);
-				
-				setWarning("Error: cannot load file " + pdfViewerContext.getCurrentPdfFilePath());
-				clearPdfImg();
-			}
-		};
+		AsyncCallback<PdfPage> callback = new PdfServiceCallback(this, pdfViewerContext);
 		
 		clearPdfImg();
-		PdfViewer.this.getPdfPagePanel().add(new HTML("<i>Loading...</i>"));
+		getPdfPagePanel().add(new HTML("<i>Loading...</i>"));
 		
-		pdfService.getPdfPage(pdfFilepath, isAbsolutePath, pageNumber, callback);
+		if( pdfViewerContext.getSource() == PdfSource.ABSOLUTE_PATH ){
+			pdfService.getPdfPageFromFile(pdfFilepath, pageNumber, callback);
+		}
+		
+		if( pdfViewerContext.getSource() == PdfSource.RESOURCES_DIR ){
+			pdfService.getPdfPageFromResourcesDir(pdfFilepath, pageNumber, callback);
+		}
 	}
 
 	/**
@@ -207,11 +172,10 @@ public class PdfViewer extends PdfDisplay{
 	 * true - look for the file at the absolute path; 
 	 * false - look for the file relative to the resources directory
 	 */
-	public void loadPdfFile( String filePath, boolean isAbsolutePath ){
+	public void loadPdfFile( String filePath ){
 		pdfViewerContext.setCurrentPdfFilePath(filePath);
-		pdfViewerContext.setAbsolutePath(isAbsolutePath);
 		
-		callPdfRenderingService(pdfViewerContext.getCurrentPdfFilePath(), pdfViewerContext.isAbsolutePath(), 1);
+		callPdfRenderingService(pdfViewerContext.getCurrentPdfFilePath(), 1);
 	}
 	
 	private void reloadPdfImg() {
@@ -224,7 +188,7 @@ public class PdfViewer extends PdfDisplay{
 		this.getPdfPagePanel().add(imageHtml);
 	}
 	
-	private void clearPdfImg() {
+	/*package*/ void clearPdfImg() {
 		this.getPdfPagePanel().clear();
 	}
 	
@@ -235,5 +199,21 @@ public class PdfViewer extends PdfDisplay{
 	public void setWarning(String warningMessage){
 		warningPopup.setWarningMessage(warningMessage);
 		warningPopup.center();
+	}
+	
+	/*package*/ HTMLPanel getViewerPdfPagePanel() {
+		return super.getPdfPagePanel();
+	}
+
+	/*package*/ void setViewerPdfPagePanel(HTMLPanel pdfPagePanel) {
+		super.setPdfPagePanel(pdfPagePanel);
+	}
+
+	/*package*/ PdfDisplayControl getViewerPdfDisplayControl() {
+		return super.getPdfDisplayControl();
+	}
+
+	/*package*/ void setViewerPdfDisplayControl(PdfDisplayControl pdfDisplayControl) {
+		super.setPdfDisplayControl(pdfDisplayControl);
 	}
 }

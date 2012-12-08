@@ -1,8 +1,8 @@
 package com.version80.gwt.pdfViewer.client;
 
 public class PdfViewerContext {
+	private PdfSource source;
 	private String currentPdfFilePath = null;
-	private boolean isAbsolutePath = false;
 	private String currentPdfImage = null;
 	private int currentPdfPageNumber = -1;
 	private int numberOfPdfPages = -1;
@@ -19,6 +19,13 @@ public class PdfViewerContext {
 		//blank
 	}
 	
+	private PdfViewerContext(Double width, Double height, PdfSource source){
+		this.pdfPageMaxWidth = width;
+		this.pdfPageMaxHeight = height;
+		
+		this.setSource(source);
+	}
+
 	/**
 	 * constructs pdf viewer context with the maximum width and maximum height
 	 * to enable scrolling
@@ -26,32 +33,23 @@ public class PdfViewerContext {
 	 * @param width maximum width in px
 	 * @param height maximum height in px
 	 */
-	public PdfViewerContext( Double width, Double height ){
-		pdfPageMaxWidth = width;
-		pdfPageMaxHeight = height;
+	public static PdfViewerContext createPdfViewerContext(Double width, Double height, PdfSource source){
+		return new PdfViewerContext(width, height, source);
 	}
 
 	public String getCurrentPdfFilePath() {
 		return currentPdfFilePath;
 	}
 
-	void setCurrentPdfFilePath(String currentPdfFilePath) {
+	/*packages*/ void setCurrentPdfFilePath(String currentPdfFilePath) {
 		this.currentPdfFilePath = currentPdfFilePath;
-	}
-
-	public boolean isAbsolutePath() {
-		return isAbsolutePath;
-	}
-
-	void setAbsolutePath(boolean isAbsolutePath) {
-		this.isAbsolutePath = isAbsolutePath;
 	}
 
 	public String getCurrentPdfImage() {
 		return currentPdfImage;
 	}
 
-	void setCurrentPdfImage(String currentPdfImage) {
+	/*packages*/ void setCurrentPdfImage(String currentPdfImage) {
 		this.currentPdfImage = currentPdfImage;
 	}
 
@@ -59,7 +57,7 @@ public class PdfViewerContext {
 		return currentPdfPageNumber;
 	}
 
-	void setCurrentPdfPageNumber(int currentPdfPageNumber) {
+	/*packages*/ void setCurrentPdfPageNumber(int currentPdfPageNumber) {
 		this.currentPdfPageNumber = currentPdfPageNumber;
 	}
 
@@ -67,7 +65,7 @@ public class PdfViewerContext {
 		return numberOfPdfPages;
 	}
 
-	void setNumberOfPdfPages(int numberOfPdfPages) {
+	/*packages*/ void setNumberOfPdfPages(int numberOfPdfPages) {
 		this.numberOfPdfPages = numberOfPdfPages;
 	}
 
@@ -75,7 +73,7 @@ public class PdfViewerContext {
 		return pdfPageWidth;
 	}
 
-	void setPdfPageWidth(double pdfPageWidth) {
+	/*packages*/ void setPdfPageWidth(double pdfPageWidth) {
 		this.pdfPageWidth = pdfPageWidth;
 	}
 
@@ -83,7 +81,7 @@ public class PdfViewerContext {
 		return pdfPageHeight;
 	}
 
-	void setPdfPageHeight(double pdfPageHeight) {
+	/*packages*/ void setPdfPageHeight(double pdfPageHeight) {
 		this.pdfPageHeight = pdfPageHeight;
 	}
 
@@ -91,7 +89,7 @@ public class PdfViewerContext {
 		return pdfEnlargeRate;
 	}
 
-	public void setPdfEnlargeRate(double pdfEnlargeRate) {
+	/*packages*/  void setPdfEnlargeRate(double pdfEnlargeRate) {
 		this.pdfEnlargeRate = pdfEnlargeRate;
 	}
 
@@ -99,15 +97,15 @@ public class PdfViewerContext {
 		return ZoomInRate;
 	}
 
-	public void setZoomInRate(double zoomInRate) {
+	/*packages*/  void setZoomInRate(double zoomInRate) {
 		ZoomInRate = zoomInRate;
 	}
 
-	public double getPdfHeightToWidthRatio() {
+	public  double getPdfHeightToWidthRatio() {
 		return pdfHeightToWidthRatio;
 	}
 
-	public void setPdfHeightToWidthRatio(double pdfHeightToWidthRatio) {
+	/*packages*/  void setPdfHeightToWidthRatio(double pdfHeightToWidthRatio) {
 		this.pdfHeightToWidthRatio = pdfHeightToWidthRatio;
 	}
 
@@ -115,7 +113,7 @@ public class PdfViewerContext {
 		return pdfPageMaxWidth;
 	}
 
-	public void setPdfPageMaxWidth(double pdfPageMaxWidth) {
+	/*packages*/  void setPdfPageMaxWidth(double pdfPageMaxWidth) {
 		this.pdfPageMaxWidth = pdfPageMaxWidth;
 	}
 
@@ -123,8 +121,15 @@ public class PdfViewerContext {
 		return pdfPageMaxHeight;
 	}
 
-	public void setPdfPageMaxHeight(double pdfPageMaxHeight) {
+	/*packages*/  void setPdfPageMaxHeight(double pdfPageMaxHeight) {
 		this.pdfPageMaxHeight = pdfPageMaxHeight;
 	}
 
+	public PdfSource getSource() {
+		return source;
+	}
+	
+	private void setSource(PdfSource source) {
+		this.source = source;
+	}
 }

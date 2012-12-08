@@ -20,10 +20,10 @@ import com.google.gwt.user.client.ui.Widget;
 public class PdfDisplay extends Composite implements HasText {
 	private static PdfDisplayUiBinder uiBinder = GWT
 			.create(PdfDisplayUiBinder.class);
-	@UiField Label title;
-	@UiField HTMLPanel pdfPagePanel;
-	@UiField VerticalPanel pdfdisplay;
-	@UiField PdfDisplayControl pdfDisplayControl;
+	@UiField protected Label title;
+	@UiField protected HTMLPanel pdfPagePanel;
+	@UiField protected VerticalPanel pdfdisplay;
+	@UiField protected PdfDisplayControl pdfDisplayControl;
 	
 	interface PdfDisplayUiBinder extends UiBinder<Widget, PdfDisplay> {
 	}
@@ -72,5 +72,4 @@ public class PdfDisplay extends Composite implements HasText {
 	protected void setPdfDisplayControl(PdfDisplayControl pdfDisplayControl) {
 		this.pdfDisplayControl = pdfDisplayControl;
 	}
-
 }
