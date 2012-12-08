@@ -19,7 +19,7 @@ Add the pdfViewer.jar file in {path/to/PdfViewer/dir}/build directory to the Jav
 
 Create GWT Web Application Project.
 
-Drop PDFRenderer-0.9.1.jar in the {path/to/war/dir/WEB-INF/lib}. You may download it [here](https://github.com/paulhfch/PdfViewer/blob/master/war/WEB-INF/lib/PDFRenderer-0.9.1.jar?raw=true).
+Drop PDFRenderer-0.9.1.jar in the {path/to/war}/WEB-INF/lib. You may download it [here](https://github.com/paulhfch/PdfViewer/blob/master/war/WEB-INF/lib/PDFRenderer-0.9.1.jar?raw=true).
 
 In {project}.gwt.xml file, inherit module
 
@@ -39,8 +39,8 @@ In web.xml file, add the following lines:
 
 To instantiate a PdfViewer object and load up a PDF file stored on server,
 
-	PdfViewer viewer = new PdfViewer();
+    PdfViewerContext context = PdfViewerContext.createPdfViewerContext(600d, 500d, PdfSource.RESOURCES_DIR);
+    PdfViewer viewer = new PdfViewer(context);
+    viewer.loadPdfFile( TEST_PDF );
 
-	RootPanel.get().add(viewer);
-
-	viewer.loadPdfFile(FILEPATH);
+    RootPanel.get().add(viewer);
